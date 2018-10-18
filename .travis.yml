@@ -12,4 +12,4 @@ notifications:
 script:
 - mvn verify
 - mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify
-- mvn sonar:sonar -Dsonar.projectKey=APAW-ECP2 -Dsonar.organization=manupuchades-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=2c532e63266068a973b9c34d54de2d35d357ee2f
+- mvn sonar:sonar -Dsonar.projectKey=APAW-ECP2 -Dsonar.organization=manupuchades-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR
