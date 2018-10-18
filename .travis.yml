@@ -1,0 +1,14 @@
+language: java
+jdk:
+- oraclejdk8
+branches:
+  only:
+  - master
+  - develop
+notifications:
+  email:
+    recipients:
+    - m.puchades@gmail.es
+script:
+# Test
+- mvn verify
