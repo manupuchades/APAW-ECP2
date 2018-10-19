@@ -1,5 +1,9 @@
 package api;
 
+import api.apiControllers.StadiumApiController;
+import api.daos.DaoFactory;
+import api.daos.memory.DaoMemoryFactory;
+import api.dtos.StadiumDto;
 import api.exceptions.ArgumentNotValidException;
 import api.exceptions.NotFoundException;
 import api.exceptions.RequestInvalidException;
@@ -10,7 +14,10 @@ import http.HttpStatus;
 public class Dispatcher {
 
     static {
+        DaoFactory.setFactory(new DaoMemoryFactory());
     }
+
+    private StadiumApiController stadiumApiController = new StadiumApiController();
 
 
     public void submit(HttpRequest request, HttpResponse response) {
@@ -49,8 +56,8 @@ public class Dispatcher {
     }
 
     private void doPost(HttpRequest request, HttpResponse response) {
-        if (false) {
-            // TODO
+        if (request.isEqualsPath(StadiumApiController.STADIUMS)) {
+            this.stadiumApiController.create((StadiumDto) request.getBody());
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }
