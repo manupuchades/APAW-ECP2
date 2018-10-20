@@ -1,5 +1,8 @@
 package api.dtos;
 
+import api.entities.Stadium;
+import org.jetbrains.annotations.NotNull;
+
 public class StadiumDto {
     private String name;
     private int capacity;
@@ -9,6 +12,10 @@ public class StadiumDto {
         this.name = name;
         this.capacity = capacity;
         this.covered = covered;
+    }
+
+     public StadiumDto (@NotNull Stadium stadium){
+        this(stadium.getName(), stadium.getCapacity(), stadium.isCovered());
     }
 
     public int getCapacity() {

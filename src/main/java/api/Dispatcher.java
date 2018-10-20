@@ -10,6 +10,7 @@ import api.exceptions.RequestInvalidException;
 import http.HttpRequest;
 import http.HttpResponse;
 import http.HttpStatus;
+import org.apache.logging.log4j.LogManager;
 
 public class Dispatcher {
 
@@ -21,6 +22,9 @@ public class Dispatcher {
 
 
     public void submit(HttpRequest request, HttpResponse response) {
+        LogManager.getLogger(this.getClass()).debug("   submit : " + request + "response: " + response);
+
+
         String ERROR_MESSAGE = "{'error':'%S'}";
         try {
             switch (request.getMethod()) {
@@ -64,8 +68,8 @@ public class Dispatcher {
     }
 
     private void doGet(HttpRequest request, HttpResponse response) {
-        if (false) {
-            // TODO
+        if (request.isEqualsPath(StadiumApiController.STADIUMS)) {
+            response.setBody(this.stadiumApiController.readAll());
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }
@@ -88,8 +92,8 @@ public class Dispatcher {
     }
 
     private void doDelete(HttpRequest request) {
-        if (false) {
-            // TODO
+        if (request.isEqualsPath(StadiumApiController.STADIUMS + StadiumApiController.BY_NAME)) {
+            this.stadiumApiController.deleteByName(request.getPath(1));
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }
