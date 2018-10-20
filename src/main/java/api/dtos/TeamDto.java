@@ -1,29 +1,28 @@
-package api.entities;
+package api.dtos;
+
+import api.entities.Player;
+import api.entities.Team;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class Team {
-    private String id;
+public class TeamDto {
     private String name;
     private String address;
     private int points;
     private List<Player> squad;
 
-    public Team(String name, String address, List<Player> squad) {
+    public TeamDto(String name, String address, List<Player> squad) {
         this.name = name;
         this.address = address;
         this.squad = squad;
     }
 
-    public Team() {
+    public TeamDto (@NotNull Team team){
+        this(team.getName(), team.getAddress(), team.getSquad());
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public TeamDto() {
     }
 
     public String getName() {

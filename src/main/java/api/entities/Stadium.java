@@ -12,7 +12,6 @@ public class Stadium {
     }
 
     public Stadium(String name, int capacity, boolean covered) {
-        this.id = id;
         this.capacity = capacity;
         this.covered = covered;
         this.name = name;

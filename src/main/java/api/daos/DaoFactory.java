@@ -18,4 +18,6 @@ public abstract class DaoFactory {
 
     public abstract StadiumDao getStadiumDao();
 
+    public abstract TeamDao getTeamDao();
+
 }

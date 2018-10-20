@@ -1,9 +1,11 @@
 package api;
 
 import api.apiControllers.StadiumApiController;
+import api.apiControllers.TeamApiController;
 import api.daos.DaoFactory;
 import api.daos.memory.DaoMemoryFactory;
 import api.dtos.StadiumDto;
+import api.dtos.TeamDto;
 import api.exceptions.ArgumentNotValidException;
 import api.exceptions.NotFoundException;
 import api.exceptions.RequestInvalidException;
@@ -20,6 +22,7 @@ public class Dispatcher {
 
     private StadiumApiController stadiumApiController = new StadiumApiController();
 
+    private TeamApiController teamApiController = new TeamApiController();
 
     public void submit(HttpRequest request, HttpResponse response) {
         LogManager.getLogger(this.getClass()).debug("   submit : " + request + "response: " + response);
@@ -62,6 +65,8 @@ public class Dispatcher {
     private void doPost(HttpRequest request, HttpResponse response) {
         if (request.isEqualsPath(StadiumApiController.STADIUMS)) {
             this.stadiumApiController.create((StadiumDto) request.getBody());
+        } else if (request.isEqualsPath(TeamApiController.TEAMS)) {
+            this.teamApiController.create((TeamDto) request.getBody());
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }
@@ -70,6 +75,8 @@ public class Dispatcher {
     private void doGet(HttpRequest request, HttpResponse response) {
         if (request.isEqualsPath(StadiumApiController.STADIUMS)) {
             response.setBody(this.stadiumApiController.readAll());
+        } else if (request.isEqualsPath(TeamApiController.TEAMS)) {
+            response.setBody(this.teamApiController.readAll());
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }
@@ -94,7 +101,10 @@ public class Dispatcher {
     private void doDelete(HttpRequest request) {
         if (request.isEqualsPath(StadiumApiController.STADIUMS + StadiumApiController.BY_NAME)) {
             this.stadiumApiController.deleteByName(request.getPath(1));
-        } else {
+        }else if (request.isEqualsPath(TeamApiController.TEAMS + TeamApiController.BY_ID)) {
+            this.teamApiController.deleteById(request.getPath(1));
+        }
+        else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }
     }
