@@ -13,13 +13,13 @@ public class TeamApiController {
 
     private TeamBusinessController teamBusinessController = new TeamBusinessController();
 
-    public void create (TeamDto teamDto){
+    public String create (TeamDto teamDto){
         this.validate(teamDto, "teamDto");
         this.validate(teamDto.getName(), "teamDto name");
         this.validate(teamDto.getAddress(), "teamDto address");
         this.validate(teamDto.getSquad(), "teamDto squad");
 
-        this.teamBusinessController.create(teamDto);
+        return this.teamBusinessController.create(teamDto);
     }
 
     public void deleteById(String id) {

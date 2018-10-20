@@ -6,8 +6,8 @@ public class Team {
     private String id;
     private String name;
     private String address;
-    private int points;
     private List<Player> squad;
+    private int points;
 
     public Team(String name, String address, List<Player> squad) {
         this.name = name;

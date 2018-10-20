@@ -64,9 +64,9 @@ public class Dispatcher {
 
     private void doPost(HttpRequest request, HttpResponse response) {
         if (request.isEqualsPath(StadiumApiController.STADIUMS)) {
-            this.stadiumApiController.create((StadiumDto) request.getBody());
+            response.setBody(this.stadiumApiController.create((StadiumDto) request.getBody()));
         } else if (request.isEqualsPath(TeamApiController.TEAMS)) {
-            this.teamApiController.create((TeamDto) request.getBody());
+            response.setBody(this.teamApiController.create((TeamDto) request.getBody()));
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }

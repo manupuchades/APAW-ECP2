@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class StadiumBusinessController {
-    public void create (StadiumDto stadiumDto){
+    public String create (StadiumDto stadiumDto){
         Stadium stadium = new Stadium (stadiumDto.getName(),stadiumDto.getCapacity(), stadiumDto.isCovered());
         DaoFactory.getFactory().getStadiumDao().save(stadium);
+
+        return stadium.getId();
     }
 
     public void deleteByName(String name) {

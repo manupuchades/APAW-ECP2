@@ -8,13 +8,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TeamBusinessController {
-    public void create (TeamDto teamDto){
+    public String create (TeamDto teamDto){
         Team team = new Team (teamDto.getName(),teamDto.getAddress(),teamDto.getSquad());
         DaoFactory.getFactory().getTeamDao().save(team);
+
+        return team.getId();
     }
 
     public void deleteById(String id) {
-        DaoFactory.getFactory().getStadiumDao().deleteById(id);
+        DaoFactory.getFactory().getTeamDao().deleteById(id);
     }
 
     public List<TeamDto> readAll() {

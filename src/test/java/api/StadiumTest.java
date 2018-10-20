@@ -31,7 +31,7 @@ class StadiumTest {
     }
 
     @Test
-    void createStadiumWithoutSStadiumDtoName() {
+    void createStadiumWithoutStadiumDtoName() {
         HttpRequest request = HttpRequest.builder(StadiumApiController.STADIUMS).body(new StadiumDto(null, 68000, false)).post();
         HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());

@@ -9,8 +9,8 @@ import java.util.List;
 public class TeamDto {
     private String name;
     private String address;
-    private int points;
     private List<Player> squad;
+    private int points;
 
     public TeamDto(String name, String address, List<Player> squad) {
         this.name = name;

@@ -14,13 +14,13 @@ public class StadiumApiController {
 
     private StadiumBusinessController stadiumBusinessController = new StadiumBusinessController();
 
-    public void create (StadiumDto stadiumDto){
+    public String create (StadiumDto stadiumDto){
         this.validate(stadiumDto, "stadiumDto");
         this.validate(stadiumDto.getName(), "stadiumDto name");
         this.validate(stadiumDto.getCapacity(), "stadiumDto capacity");
         this.validate(stadiumDto.isCovered(), "stadiumDto covered");
 
-        this.stadiumBusinessController.create(stadiumDto);
+        return this.stadiumBusinessController.create(stadiumDto);
     }
 
     public void deleteByName(String name) {
