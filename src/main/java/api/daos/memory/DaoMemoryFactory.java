@@ -1,12 +1,14 @@
 package api.daos.memory;
 
 import api.daos.DaoFactory;
+import api.daos.MatchDao;
 import api.daos.StadiumDao;
 import api.daos.TeamDao;
 
 public class DaoMemoryFactory extends DaoFactory {
     private StadiumDao stadiumDao;
     private TeamDao teamDao;
+    private MatchDao matchDao;
 
 
     @Override
@@ -25,5 +27,14 @@ public class DaoMemoryFactory extends DaoFactory {
         }
 
         return teamDao;
+    }
+
+    @Override
+    public MatchDao getMatchDao() {
+        if(this.matchDao == null){
+            this.matchDao = new MatchDaoMemory();
+        }
+
+        return matchDao;
     }
 }

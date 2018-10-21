@@ -56,7 +56,7 @@ class TeamTest {
     }
 
     @Test
-    void createTEamWithoutTeamDtoName() {
+    void createTeamWithoutTeamDtoName() {
         HttpRequest request = HttpRequest.builder(TeamApiController.TEAMS).body(new TeamDto(null, addressA, squadA)).post();
         HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
