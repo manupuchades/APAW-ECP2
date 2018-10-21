@@ -11,8 +11,7 @@ public class Stadium {
     public Stadium() {
     }
 
-    public Stadium(String id,String name, int capacity, boolean covered) {
-        this.id = id;
+    public Stadium(String name, int capacity, boolean covered) {
         this.capacity = capacity;
         this.covered = covered;
         this.name = name;

@@ -7,7 +7,7 @@ import java.util.*;
 
 public abstract class GenericDaoMemory<T> implements GenericDao<T, String> {
 
-    private Map<String, T> map;
+    protected Map<String, T> map;
 
     private int id;
 
