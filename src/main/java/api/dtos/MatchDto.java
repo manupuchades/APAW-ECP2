@@ -1,32 +1,28 @@
-package api.entities;
+package api.dtos;
+
+import api.entities.Match;
+import api.entities.Team;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 
-public class Match {
-
-    private String id;
+public class MatchDto {
     private String address;
     private String referee;
     private Team home;
     private Team away;
     private LocalDateTime localTime;
 
-    public Match(){}
+    public MatchDto (@NotNull Match match){
+        this(match.getAddress(), match.getReferee(), match.getHome(), match.getAway(), match.getLocalTime());
+    }
 
-    public Match(String address, String referee, Team home, Team away, LocalDateTime localTime) {
+    public MatchDto(String address, String referee, Team home, Team away, LocalDateTime localTime) {
         this.address = address;
         this.referee = referee;
         this.home = home;
         this.away = away;
         this.localTime = localTime;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getAddress() {

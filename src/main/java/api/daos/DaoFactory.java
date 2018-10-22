@@ -20,4 +20,5 @@ public abstract class DaoFactory {
 
     public abstract TeamDao getTeamDao();
 
+    public abstract MatchDao getMatchDao();
 }
