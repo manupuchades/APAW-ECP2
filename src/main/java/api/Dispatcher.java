@@ -95,8 +95,8 @@ public class Dispatcher {
     }
 
     private void doPut(HttpRequest request) {
-        if (false) {
-            // TODO
+        if (request.isEqualsPath(TeamApiController.TEAMS + TeamApiController.BY_ID)) {
+            this.teamApiController.update(request.getPath(1), (TeamDto) request.getBody());
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }

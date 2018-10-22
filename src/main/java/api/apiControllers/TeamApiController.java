@@ -35,4 +35,9 @@ public class TeamApiController {
             throw new ArgumentNotValidException(message + " is missing");
         }
     }
+
+    public void update(String id, TeamDto teamDto) {
+        this.validate(teamDto, "teamDto");
+        this.teamBusinessController.update(id, teamDto);
+    }
 }

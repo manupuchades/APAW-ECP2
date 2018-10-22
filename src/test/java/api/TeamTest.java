@@ -68,8 +68,22 @@ class TeamTest {
         LogManager.getLogger(this.getClass()).debug("readALL : " + idA);
 
         HttpRequest request = HttpRequest.builder(TeamApiController.TEAMS).get();
-        List<TeamDto> stadiums = (List<TeamDto>) new Client().submit(request).getBody();
-        assertEquals(2, stadiums.size());
+        List<TeamDto> teams = (List<TeamDto>) new Client().submit(request).getBody();
+        assertEquals(2, teams.size());
+    }
+
+    @Test
+    void testUpdateUser() {
+        HttpRequest updateRequest = HttpRequest.builder(TeamApiController.TEAMS).path(TeamApiController.BY_ID)
+                .expandPath("1").body(new TeamDto(nameR, addressR, squadR)).put();
+        new Client().submit(updateRequest);
+
+        HttpRequest listRequest = HttpRequest.builder(TeamApiController.TEAMS).get();
+        List<TeamDto> teams = (List<TeamDto>) new Client().submit(listRequest).getBody();
+
+        assertEquals(teams.get(0).getName(), teams.get(1).getName());
+
+
     }
 
     @Test
