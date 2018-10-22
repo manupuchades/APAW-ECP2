@@ -16,6 +16,8 @@ import http.HttpResponse;
 import http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 
+import java.time.LocalDateTime;
+
 public class Dispatcher {
 
     static {
@@ -101,8 +103,8 @@ public class Dispatcher {
     }
 
     private void doPatch(HttpRequest request) {
-        if (false) {
-            // TODO
+        if (request.isEqualsPath(MatchApiController.MATCHES + MatchApiController.BY_ID + MatchApiController.DATE)) {
+            this.matchApiController.updateSchedule(request.getPath(1), (LocalDateTime) request.getBody());
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }

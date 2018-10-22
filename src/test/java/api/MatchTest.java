@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MatchTest {
@@ -42,12 +43,29 @@ public class MatchTest {
     private String idM;
 
     @Test
-    void testCreateMatch() {
-
+    String testCreateMatch() {
         HttpRequest requestNewA = HttpRequest.builder(MatchApiController.MATCHES).body(new MatchDto(address, referee, teamA, teamR, localTime)).post();
         idM = (String) new Client().submit(requestNewA).getBody();
 
         LogManager.getLogger(this.getClass()).debug("create idM : " + idM);
+        return idM;
+    }
+    @Test
+    void testUpdateSchedule(){
+        String id = this.testCreateMatch();
+
+        LocalDateTime newLocalTime = LocalDateTime.now();
+        HttpRequest request = HttpRequest.builder(MatchApiController.MATCHES).path(MatchApiController.BY_ID)
+                .expandPath(id).path(MatchApiController.DATE).body(newLocalTime).patch();
+        new Client().submit(request);
+
+        HttpRequest listRequest = HttpRequest.builder(MatchApiController.MATCHES).get();
+        List<MatchDto> matches = (List<MatchDto>) new Client().submit(listRequest).getBody();
+
+        LogManager.getLogger(this.getClass()).debug("old Date : " + localTime);
+        LogManager.getLogger(this.getClass()).debug("new Date : " + matches.get(0).getLocalTime());
+
+        assertNotEquals(localTime, matches.get(0).getLocalTime());
     }
 
     @Test

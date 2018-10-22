@@ -5,12 +5,16 @@ import api.dtos.MatchDto;
 import api.exceptions.ArgumentNotValidException;
 import org.jetbrains.annotations.Contract;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class MatchApiController {
     public static final String MATCHES = "/matches";
 
     public static final String BY_ID = "/{id}";
+
+    public static final String DATE = "/date";
+
 
     private MatchBusinessController matchBusinessController = new MatchBusinessController();
 
@@ -31,6 +35,11 @@ public class MatchApiController {
 
     public List<MatchDto> readAll() {
         return this.matchBusinessController.readAll();
+    }
+
+    public void updateSchedule(String matchId, LocalDateTime dateTime) {
+        this.validate(dateTime, "dateTime");
+        this.matchBusinessController.updateSchedule(matchId, dateTime);
     }
 
     private void validate(Object property, String message) {
