@@ -10,6 +10,7 @@ import http.HttpException;
 import http.HttpRequest;
 import http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -20,30 +21,51 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class MatchTest {
+class MatchTest {
 
-    private String nameA = "Atletico";
-    private String addressA = "Av. de Luis Aragones, 4, 28022 Madrid";
-    private List<Player> squadA = Arrays.asList(new Player("Jan Oblak", 1, Status.STARTER), new Player("Diego Godín", 2, Status.INJURED),
-            new Player("Diego Costa", 19, Status.RESERVE));
+    private String nameA;
+    private String addressA;
+    private List<Player> squadA;
 
-    private String nameR = "Real Madrid";
-    private String addressR = "Av. de Concha Espina, 1, 28036 Madrid";
-    private List<Player> squadR = Arrays.asList(new Player("Keylor Navas", 1, Status.SUBSTITUTE), new Player("Luka Modrić", 10, Status.STARTER),
-            new Player("Gareth Bale", 11, Status.INJURED));
+    private String nameR;
+    private String addressR;
+    private List<Player> squadR;
 
-    private Team teamA = new Team(nameA, addressA, squadA);
+    private Team teamA;
 
-    private Team teamR = new Team (nameR, addressR, squadR);
+    private Team teamR;
 
-    private String address = addressA;
-    private String referee = "Rafael Guerrero";
-    private LocalDateTime localTime = LocalDateTime.now();
+    private String address;
+    private String referee;
+    private LocalDateTime localTime;
 
     private String idM;
 
-    @Test
-    String testCreateMatch() {
+    @BeforeEach
+    void createMatchForTest(){
+        createMatch();
+    }
+
+    private String createMatch() {
+
+        nameA = "Atletico";
+        addressA = "Av. de Luis Aragones, 4, 28022 Madrid";
+        squadA = Arrays.asList(new Player("Jan Oblak", 1, Status.STARTER), new Player("Diego Godín", 2, Status.INJURED),
+                new Player("Diego Costa", 19, Status.RESERVE));
+
+        nameR = "Real Madrid";
+        addressR = "Av. de Concha Espina, 1, 28036 Madrid";
+        squadR = Arrays.asList(new Player("Keylor Navas", 1, Status.SUBSTITUTE), new Player("Luka Modrić", 10, Status.STARTER),
+                new Player("Gareth Bale", 11, Status.INJURED));
+
+        teamA = new Team(nameA, addressA, squadA);
+
+        teamR = new Team (nameR, addressR, squadR);
+
+        address = addressA;
+        referee = "Rafael Guerrero";
+        localTime = LocalDateTime.now();
+
         HttpRequest requestNewA = HttpRequest.builder(MatchApiController.MATCHES).body(new MatchDto(address, referee, teamA, teamR, localTime)).post();
         idM = (String) new Client().submit(requestNewA).getBody();
 
@@ -52,7 +74,7 @@ public class MatchTest {
     }
     @Test
     void testUpdateSchedule(){
-        String id = this.testCreateMatch();
+        String id = this.createMatch();
 
         LocalDateTime newLocalTime = LocalDateTime.now();
         HttpRequest request = HttpRequest.builder(MatchApiController.MATCHES).path(MatchApiController.BY_ID)
@@ -88,17 +110,20 @@ public class MatchTest {
 
         HttpRequest request = HttpRequest.builder(MatchApiController.MATCHES).get();
         List<MatchDto> matches = (List<MatchDto>) new Client().submit(request).getBody();
-        assertEquals(1, matches.size());
+        assertEquals(4, matches.size());
     }
 
     @Test
     void testDeleteById() {
+        HttpRequest oldListRequest = HttpRequest.builder(MatchApiController.MATCHES).get();
+        List<MatchDto> oldMatchesList = (List<MatchDto>) new Client().submit(oldListRequest).getBody();
+
         HttpRequest deleteRequest = HttpRequest.builder(MatchApiController.MATCHES).path(MatchApiController.BY_ID)
                 .expandPath("1").delete();
         new Client().submit(deleteRequest);
 
-        HttpRequest listRequest = HttpRequest.builder(MatchApiController.MATCHES).get();
-        List<MatchDto> matches = (List<MatchDto>) new Client().submit(listRequest).getBody();
-        assertEquals(0, matches.size());
+        HttpRequest newListRequest = HttpRequest.builder(MatchApiController.MATCHES).get();
+        List<MatchDto> newMatchesList = (List<MatchDto>) new Client().submit(newListRequest).getBody();
+        assertEquals(oldMatchesList.size(), newMatchesList.size()+1);
     }
 }

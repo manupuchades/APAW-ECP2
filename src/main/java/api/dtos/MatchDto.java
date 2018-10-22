@@ -13,8 +13,6 @@ public class MatchDto {
     private Team away;
     private LocalDateTime localTime;
 
-    public MatchDto(){}
-
     public MatchDto (@NotNull Match match){
         this(match.getAddress(), match.getReferee(), match.getHome(), match.getAway(), match.getLocalTime());
     }

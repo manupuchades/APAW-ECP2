@@ -9,6 +9,7 @@ import http.HttpException;
 import http.HttpRequest;
 import http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -33,8 +34,10 @@ class TeamTest {
     private List<Player> squadR = Arrays.asList(new Player("Keylor Navas", 1, Status.SUBSTITUTE), new Player("Luka Modrić", 10, Status.STARTER),
             new Player("Gareth Bale", 11, Status.INJURED));
 
-    @Test
-    void testCreateTeams() {
+
+
+    @BeforeEach
+    void createTeamForTest() {
 
         HttpRequest requestNewA = HttpRequest.builder(TeamApiController.TEAMS).body(new TeamDto(nameA, addressA, squadA)).post();
         idA = (String) new Client().submit(requestNewA).getBody();
@@ -69,7 +72,7 @@ class TeamTest {
 
         HttpRequest request = HttpRequest.builder(TeamApiController.TEAMS).get();
         List<TeamDto> teams = (List<TeamDto>) new Client().submit(request).getBody();
-        assertEquals(2, teams.size());
+        assertEquals(8, teams.size());
     }
 
     @Test
@@ -91,12 +94,16 @@ class TeamTest {
 
         LogManager.getLogger(this.getClass()).debug("delete idR : " + 1);
 
+        HttpRequest oldlistRequest = HttpRequest.builder(TeamApiController.TEAMS).get();
+        List<TeamDto> oldTeamsList = (List<TeamDto>) new Client().submit(oldlistRequest).getBody();
+
         HttpRequest deleteRequest = HttpRequest.builder(TeamApiController.TEAMS).path(TeamApiController.BY_ID)
                 .expandPath("1").delete();
         new Client().submit(deleteRequest);
 
-        HttpRequest listRequest = HttpRequest.builder(TeamApiController.TEAMS).get();
-        List<TeamDto> teams = (List<TeamDto>) new Client().submit(listRequest).getBody();
-        assertEquals(1, teams.size());
+        HttpRequest newListRequest = HttpRequest.builder(TeamApiController.TEAMS).get();
+        List<TeamDto> newTeamsList = (List<TeamDto>) new Client().submit(newListRequest).getBody();
+
+        assertEquals(oldTeamsList.size(), newTeamsList.size()+1);
     }
 }
